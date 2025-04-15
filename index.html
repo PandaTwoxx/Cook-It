@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cook It - Collect, Trade, and Play!</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+<!-- Splash Screen -->
+<div id="splash-screen" class="screen">
+  <div class="splash-container">
+    <div class="logo-container">
+      <img src="https://via.placeholder.com/150x150.png?text=Cook+It" alt="Cook It Logo" class="logo">
+    </div>
+    <h1 class="game-title">Cook It</h1>
+    <p class="slogan">Collect, Trade, and Play!</p>
+
+    <div class="auth-container">
+      <div class="auth-tabs">
+        <div class="auth-tab active" data-form="login-form">Login</div>
+        <div class="auth-tab" data-form="register-form">Register</div>
+      </div>
+
+      <form id="login-form" class="auth-form active">
+        <input type="text" name="username" placeholder="Username" required>
+        <input type="password" name="password" placeholder="Password" required>
+        <button type="submit" class="btn-primary">Login</button>
+      </form>
+
+      <form id="register-form" class="auth-form">
+        <input type="text" name="username" placeholder="Username" required>
+        <input type="password" name="password" placeholder="Password" required>
+        <input type="password" name="confirm-password" placeholder="Confirm Password" required>
+        <button type="submit" class="btn-primary">Register</button>
+      </form>
+
+      <div class="error-message"></div>
+    </div>
+  </div>
+</div>
+
+<!-- Game Screen -->
+<div id="game-screen" class="screen">
+  <!-- Top Bar -->
+  <div class="top-bar">
+    <div class="currency">
+      <i class="fas fa-coins"></i>
+      <span id="token-display">0</span>
+    </div>
+
+    <div class="energy">
+      <i class="fas fa-bolt"></i>
+      <span id="energy-display">0/0</span>
+    </div>
+
+    <div class="user-info">
+      <span id="username-display">Player</span>
+    </div>
+  </div>
+
+  <!-- Side Menu -->
+  <div class="side-menu">
+    <div class="menu-item active" data-tab="profile-tab">
+      <i class="fas fa-user"></i>
+      <span>Profile</span>
+    </div>
+
+    <div class="menu-item" data-tab="daily-claim-tab">
+      <i class="fas fa-calendar-day"></i>
+      <span>Daily Claim</span>
+    </div>
+
+    <div class="menu-item" data-tab="shop-tab">
+      <i class="fas fa-store"></i>
+      <span>Shop</span>
+    </div>
+
+    <div class="menu-item" data-tab="cooks-tab">
+      <i class="fas fa-utensils"></i>
+      <span>Cooks</span>
+    </div>
+
+    <div class="menu-item" data-tab="minigames-tab">
+      <i class="fas fa-gamepad"></i>
+      <span>Minigames</span>
+    </div>
+
+    <div class="menu-item" data-tab="gauntlets-tab">
+      <i class="fas fa-mitten"></i>
+      <span>Gauntlets</span>
+    </div>
+
+    <div class="menu-item" data-tab="store-tab">
+      <i class="fas fa-shopping-cart"></i>
+      <span>Store</span>
+    </div>
+
+    <div class="menu-item" data-tab="settings-tab">
+      <i class="fas fa-cog"></i>
+      <span>Settings</span>
+    </div>
+  </div>
+
+  <!-- Content Area -->
+  <div class="content-area">
+    <!-- Profile Tab -->
+    <div id="profile-tab" class="tab-content active">
+      <div class="profile-banner">
+        <div class="banner-image"></div>
+        <div class="profile-info">
+          <h2 id="profile-username">Player</h2>
+          <div id="profile-role" class="role-badge common">Common</div>
+        </div>
+      </div>
+
+      <div class="profile-stats">
+        <h3>Stats</h3>
+        <div class="stats-grid">
+          <div class="stat-item">
+            <div class="stat-value" id="packs-opened">0</div>
+            <div class="stat-label">Packs Opened</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value" id="minigames-played">0</div>
+            <div class="stat-label">Minigames Played</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value" id="tokens-earned">0</div>
+            <div class="stat-label">Tokens Earned</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value" id="cooks-sold">0</div>
+            <div class="stat-label">Cooks Sold</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="profile-badges">
+        <h3>Badges</h3>
+        <div class="badges-container" id="badges-container">
+          <!-- Badges will be added dynamically -->
+          <div class="badge">
+            <i class="fas fa-question"></i>
+            <div class="badge-tooltip">Unlock badges by playing!</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="profile-gauntlets">
+        <h3>Equipped Gauntlet</h3>
+        <div id="equipped-gauntlet">
+          <!-- Equipped gauntlet will be displayed here -->
+        </div>
+      </div>
+    </div>
+
+    <!-- Daily Claim Tab -->
+    <div id="daily-claim-tab" class="tab-content">
+      <div class="daily-claim-container">
+        <h2>Daily Claim</h2>
+        <p>Spin the wheel to claim your daily reward!</p>
+
+        <div class="wheel-container">
+          <div class="wheel" id="wheel">
+            <div class="wheel-item">100 Tokens</div>
+            <div class="wheel-item">5 Energy</div>
+            <div class="wheel-item">200 Tokens</div>
+            <div class="wheel-item">10 Energy</div>
+            <div class="wheel-item">500 Tokens</div>
+            <div class="wheel-item">15 Energy</div>
+            <div class="wheel-item">300 Tokens</div>
+            <div class="wheel-item">1000 Tokens</div>
+          </div>
+          <div class="wheel-pointer"></div>
+        </div>
+
+        <button class="btn-primary" id="spin-btn">Spin</button>
+
+        <div class="cooldown-timer" id="cooldown-timer">
+          <!-- Cooldown timer will be displayed here -->
+        </div>
+      </div>
+    </div>
+
+    <!-- Shop Tab -->
+    <div id="shop-tab" class="tab-content">
+      <h2>Shop</h2>
+      <p>Buy packs to collect new cooks!</p>
+
+      <div class="packs-container" id="shop-container">
+        <!-- Packs will be added dynamically -->
+      </div>
+    </div>
+
+    <!-- Cooks Tab -->
+    <div id="cooks-tab" class="tab-content">
+      <h2>Cooks Collection</h2>
+
+      <div class="cooks-filter">
+        <select id="cooks-filter">
+          <option value="all">All Rarities</option>
+          <option value="common">Common</option>
+          <option value="uncommon">Uncommon</option>
+          <option value="rare">Rare</option>
+          <option value="epic">Epic</option>
+          <option value="5-star">5-Star</option>
+          <option value="exotic">Exotic</option>
+          <option value="michelin">Michelin</option>
+          <option value="secret">Secret</option>
+        </select>
+      </div>
+
+      <div class="cooks-grid" id="cooks-container">
+        <!-- Cooks will be added dynamically -->
+      </div>
+    </div>
+
+    <!-- Minigames Tab -->
+    <div id="minigames-tab" class="tab-content">
+      <h2>Minigames</h2>
+      <p>Play minigames to earn tokens!</p>
+
+      <div class="minigames-container" id="minigames-container">
+        <!-- Minigames will be added dynamically -->
+      </div>
+    </div>
+
+    <!-- Gauntlets Tab -->
+    <div id="gauntlets-tab" class="tab-content">
+      <h2>Gauntlets</h2>
+      <p class="gauntlet-intro">Collect and equip gauntlets to gain special benefits. Trade your cooks to unlock more powerful gauntlets!</p>
+
+      <div class="gauntlets-container" id="gauntlets-container">
+        <!-- Gauntlets will be added dynamically -->
+      </div>
+    </div>
+
+    <!-- Store Tab -->
+    <div id="store-tab" class="tab-content">
+      <h2>Store</h2>
+      <p>Purchase special items and upgrades!</p>
+
+      <div class="store-items">
+        <div class="store-item">
+          <div class="store-item-image">
+            <img src="https://via.placeholder.com/100x100.png?text=VIP" alt="VIP Membership">
+          </div>
+          <h3>VIP Membership</h3>
+          <ul class="benefits-list">
+            <li>Daily bonus tokens</li>
+            <li>Exclusive VIP cooks</li>
+            <li>10% discount on all packs</li>
+            <li>Special VIP badge</li>
+          </ul>
+          <div class="price">5000 Tokens</div>
+          <button class="btn-primary">Purchase</button>
+        </div>
+
+        <div class="store-item">
+          <div class="store-item-image">
+            <img src="https://via.placeholder.com/100x100.png?text=Energy" alt="Energy Pack">
+          </div>
+          <h3>Energy Pack</h3>
+          <ul class="benefits-list">
+            <li>Instantly refill your energy</li>
+            <li>+5 maximum energy</li>
+          </ul>
+          <div class="price">1000 Tokens</div>
+          <button class="btn-primary">Purchase</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Settings Tab -->
+    <div id="settings-tab" class="tab-content">
+      <h2>Settings</h2>
+
+      <div class="settings-container">
+        <div class="settings-section">
+          <h3>Account Settings</h3>
+          <div class="settings-form">
+            <div class="form-group">
+              <label for="username-input">Username</label>
+              <input type="text" id="username-input" placeholder="Enter new username">
+            </div>
+            <div class="form-group">
+              <label for="password-input">Password</label>
+              <input type="password" id="password-input" placeholder="Enter new password">
+            </div>
+          </div>
+        </div>
+
+        <div class="settings-section">
+          <h3>Game Settings</h3>
+          <div class="settings-form">
+            <div class="form-group">
+              <label>Sound Effects</label>
+              <div class="toggle-switch">
+                <input type="checkbox" id="sound-toggle" checked>
+                <label for="sound-toggle"></label>
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Background Music</label>
+              <div class="toggle-switch">
+                <input type="checkbox" id="music-toggle" checked>
+                <label for="music-toggle"></label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <button class="btn-primary" id="save-settings-btn">Save Settings</button>
+      <div id="settings-message" class="settings-message"></div>
+    </div>
+  </div>
+</div>
+
+<!-- Modals -->
+<div id="pack-modal" class="modal">
+  <div class="modal-content">
+    <span class="close-btn">&times;</span>
+    <div id="pack-opening">
+      <h2>Opening Pack...</h2>
+      <div id="pack-image"></div>
+    </div>
+    <div id="pack-result">
+      <!-- Pack result will be displayed here -->
+    </div>
+  </div>
+</div>
+
+<div id="cook-modal" class="modal">
+  <div class="modal-content">
+    <span class="close-btn">&times;</span>
+    <div id="cook-details" class="cook-details">
+      <!-- Cook details will be displayed here -->
+    </div>
+  </div>
+</div>
+
+<div id="message-modal" class="modal">
+  <div class="modal-content message-modal-content">
+    <span class="close-btn">&times;</span>
+    <div id="message-container" class="message-container">
+      <!-- Message will be displayed here -->
+    </div>
+  </div>
+</div>
+
+<div id="gauntlet-modal" class="modal">
+  <div class="modal-content gauntlet-modal-content">
+    <span class="close-btn">&times;</span>
+    <div id="gauntlet-details" class="gauntlet-details">
+      <!-- Gauntlet details will be displayed here -->
+    </div>
+  </div>
+</div>
+
+<div id="game-modal" class="modal">
+  <div class="modal-content game-modal-content">
+    <span class="close-btn">&times;</span>
+    <canvas id="game-canvas"></canvas>
+    <div id="game-ui"></div>
+  </div>
+</div>
+
+<script src="js/script.js"></script>
+</body>
+</html>
+
